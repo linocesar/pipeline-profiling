@@ -36,7 +36,7 @@ if [ $NUMERO_COLUNAS -eq 1 ]
 then
 	OUT_NUMERO_COLUNAS="identificamos que a base possui apenas $NUMERO_COLUNAS coluna (features)"
 else
-	OUT_NUMERO_COLUNAS="identificamos que a base possui $NUMERO_COLUNAS (features)"
+	OUT_NUMERO_COLUNAS="identificamos que a base possui $NUMERO_COLUNAS colunas (features)"
 fi
 
 
@@ -83,6 +83,14 @@ fi
 echo -e "$TABNAME: Analisando o output do processo, ilustrado na figura  abaixo, é possível identificar que a base conta com um total de $NUMERO_LINHAS linhas totais e $OUT_DUPLICATA considerando a sua chave. Além disso, $OUT_NUMERO_COLUNAS, $OUT_CATEGORICAL, $OUT_NUMERICA e $OUT_TEXTO.\n" >> $OUTPUT 
 
 sed -i "s/DataFrame/$TABNAME/g" $FILE
+
 wkhtmltopdf $FILE $TABNAME."pdf"
 
+pdftoppm -singlefile -x 100 -y 50 -rx 300 -ry 300 -W 1470 -H 1240 -cropbox $TABNAME."pdf" $TABNAME -tiff
+
 done
+
+DIR="output"
+
+mv *.tif $DIR
+

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+OUTPUT="profiling.txt"
+
+if [ -f $OUTPUT ]; then
+	rm $OUTPUT
+fi
+
 for FILE in $(ls -1v *.html); do
 
 TABNAME=$(echo "$FILE" | sed "s/.html//g")
@@ -12,7 +18,6 @@ NUMERO_COL_CATEGORICAL=${DATA[4]}
 NUMERO_COL_NUMERICA=${DATA[5]}
 NUMERO_COL_TEXTO=${DATA[6]}
 NUMERO_COLUNAS=$((NUMERO_COL_CATEGORICAL + $NUM_COL_NUMERICA + $NUMERO_COL_TEXTO))
-OUTPUT="profiling.txt"
 
 
 if [ $NUMERO_DUPLICATAS -eq 0 ]
@@ -74,9 +79,10 @@ else
 	fi
 fi
  
+
 echo -e "$TABNAME: Analisando o output do processo, ilustrado na figura  abaixo, é possível identificar que a base conta com um total de $NUMERO_LINHAS linhas totais e $OUT_DUPLICATA considerando a sua chave. Além disso, $OUT_NUMERO_COLUNAS, $OUT_CATEGORICAL, $OUT_NUMERICA e $OUT_TEXTO.\n" >> $OUTPUT 
 
-#sed -i "s/DataFrame/$TABNAME/g" $FILE
-#wkhtmltopdf "$FILE" "$TABNAME"."pdf"
+sed -i "s/DataFrame/$TABNAME/g" $FILE
+wkhtmltopdf $FILE $TABNAME."pdf"
 
 done

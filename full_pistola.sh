@@ -90,7 +90,7 @@ wkhtmltopdf --background -q -d $DPI $FILE $TABNAME."pdf"
 
 echo -e $TABNAME."pdf gerado com sucesso!"
 
-pdftoppm -singlefile -q -tiffcompression jpeg -x 100 -y 50 -rx $DPI -ry $DPI -W 1470 -H 1240 -cropbox $TABNAME."pdf" $TABNAME -tiff
+pdftoppm -singlefile -q -tiffcompression jpeg+ -x 100 -y 50 -rx $DPI -ry $DPI -W 1470 -H 1240 -cropbox $TABNAME."pdf" $TABNAME -tiff
 
 echo -e $TABNAME."tif gerado com sucesso!\n"
 

@@ -105,9 +105,22 @@ echo -e $TABNAME."tif gerado com sucesso!\n"
 
 done
 
-# Organizar os arquivos em diretórios
-#DIR="output"
-#mv *.tif $DIR
-
 # arquivo final concatenado de pdfs 
 #pdftk *.pdf profiling.pdf
+
+
+# Organizar os arquivos em diretórios
+DIR_PRINT="print"
+DIR_PDF="pdf"
+
+if [ ! -d "$DIR_PRINT" ]; then
+	mkdir $DIR_PRINT
+fi
+
+if [ ! -d "$DIR_PDF" ]; then
+	mkdir $DIR_PDF
+fi
+
+mv *.tif $DIR_PRINT
+mv *.pdf $DIR_PDF
+

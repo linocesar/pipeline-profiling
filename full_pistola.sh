@@ -21,6 +21,14 @@ NUMERO_COL_TEXTO=${DATA[6]}
 NUMERO_COLUNAS=$(($NUMERO_COL_CATEGORICAL + $NUM_COL_NUMERICA + $NUMERO_COL_TEXTO))
 
 
+if [ $NUMERO_LINHAS -eq 1 ]
+then
+	OUT_NUMERO_LINHAS="apenas 1 linha de dados"
+else
+	OUT_NUMERO_LINHAS="$NUMERO_LINHAS linhas totais"
+fi
+
+
 if [ $NUMERO_DUPLICATAS -eq 0 ]
 then
 	OUT_DUPLICATA="sem nenhum tipo de duplicidade"
@@ -81,23 +89,25 @@ else
 fi
  
 
-echo -e "$TABNAME: Analisando o output do processo, ilustrado na figura  abaixo, é possível identificar que a base conta com um total de $NUMERO_LINHAS linhas totais e $OUT_DUPLICATA considerando a sua chave. Além disso, $OUT_NUMERO_COLUNAS, $OUT_CATEGORICAL, $OUT_NUMERICA e $OUT_TEXTO.\n" >> $OUTPUT 
+echo -e "$TABNAME: Analisando o output do processo, ilustrado na figura abaixo, é possível identificar que a base conta com um total de $OUT_NUMERO_LINHAS e $OUT_DUPLICATA considerando a sua chave. Além disso, $OUT_NUMERO_COLUNAS, $OUT_CATEGORICAL, $OUT_NUMERICA e $OUT_TEXTO.\n" >> $OUTPUT 
 
 sed -i "s/DataFrame/$TABNAME/g" $FILE
 
-
+# dependência: sudo apt install wkhtmltopdf
 wkhtmltopdf --background -q -d $DPI $FILE $TABNAME."pdf"
 
 echo -e $TABNAME."pdf gerado com sucesso!"
 
-pdftoppm -singlefile -q -tiffcompression jpeg+ -x 100 -y 50 -rx $DPI -ry $DPI -W 1470 -H 1240 -cropbox $TABNAME."pdf" $TABNAME -tiff
+# dependência: sudo apt install poppler-utils
+pdftoppm -singlefile -q -tiffcompression jpeg -x 100 -y 50 -rx $DPI -ry $DPI -W 1470 -H 1240 -cropbox $TABNAME."pdf" $TABNAME -tiff
 
 echo -e $TABNAME."tif gerado com sucesso!\n"
 
 done
 
-DIR="output"
-
+# Organizar os arquivos em diretórios
+#DIR="output"
 #mv *.tif $DIR
 
+# arquivo final concatenado de pdfs 
 #pdftk *.pdf profiling.pdf
